@@ -23,7 +23,6 @@ storage {
     owners: StorageMap<u64, Option<Identity>> = StorageMap {},
     tokens_minted: u64 = 0,
     total_supply: u64 = 0,
-    transfer_manager: ContractId = ZERO_CONTRACT_ID,
 }
 
 impl IERC721 for Contract {
@@ -76,10 +75,6 @@ impl IERC721 for Contract {
 
     #[storage(read)]
     fn isApprovedForAll(user: Identity, operator: Identity) -> bool {
-        if (operator == Identity::ContractId(storage.transfer_manager)) {
-            return true;
-        }
-
         storage.operator_approval.get((user, operator)).unwrap_or(false)
     }
 
